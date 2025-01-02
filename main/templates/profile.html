@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+    <link rel="stylesheet" href="{% static 'header.css' %}">
+    <title>Homepage</title>
+    <link rel="icon" href="{% static 'img/icon.svg' %}" type="image/svg+xml">
+</head>
+{% include 'header.html' %}
+
+<body>
+  <div class="profile-container">
+    <div class="profile-header">
+        <img src="user-avatar.jpg" alt="Аватар пользователя" class="profile-avatar">
+        <form method="post">
+            <div class="profile-avatar-actions">
+                <label for="avatar-upload" class="profile-change-avatar">Сменить аватар</label>
+                <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+            </div>
+        </form>
+      </div>
+    <div class="profile-content">
+      <div class="profile-info">
+        <h2>Личная информация</h2>
+        <ul>
+          <li>
+            <strong>Login:</strong>
+            <span class="profile-email">{{ request.user }}</span>
+          </li>
+          <li>
+             <strong>Пароль:</strong>
+            <span class="profile-password">********</span>
+          </li>
+          <li><strong>Голосований пройдено</strong> <span class="profile-comment-count">123</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+   <script>
+        let avatarBase64 = null;
+
+        document.getElementById('avatar-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const avatarImg = document.querySelector('.profile-avatar');
+                avatarImg.src = e.target.result;
+                avatarBase64 = e.target.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+    </script>
+</body>
+    
+<footer>
+</footer>
+
+</html>
