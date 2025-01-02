@@ -1,0 +1,133 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.profile-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+    margin-top: 10%;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-right: 20px;
+      object-fit: cover;
+      border: 2px solid #ddd;
+}
+
+.profile-avatar-actions {
+      display: flex;
+      flex-direction: column;
+}
+
+.profile-change-avatar {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-bottom: 10px;
+        display: inline-block;
+        text-align: center;
+}
+
+.profile-change-avatar:hover {
+        background-color: #0056b3;
+}
+
+.profile-content {
+    padding: 10px 0;
+}
+
+.profile-info {
+      padding-top: 10px;
+}
+
+.profile-info h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.profile-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-info li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-info strong {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.profile-edit-email,
+.profile-edit-password {
+        background-color: #28a745;
+        color: #fff;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 0.9em;
+}
+
+.profile-edit-email:hover,
+.profile-edit-password:hover {
+        background-color: #1e7e34;
+}
+
+@media (max-width: 768px) {
+   .profile-container {
+      width: 95%;
+      }
+        .profile-header {
+         flex-direction: column;
+        text-align: center;
+        }
+
+        .profile-avatar {
+         margin-right: 0;
+         margin-bottom: 10px;
+        }
+
+      .profile-info li {
+        flex-direction: column;
+          align-items: flex-start;
+      }
+
+      .profile-info li strong {
+        margin-bottom: 5px;
+      }
+
+        .profile-edit-email,
+        .profile-edit-password {
+          margin-top: 5px;
+      }
+}
