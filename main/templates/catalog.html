@@ -12,48 +12,17 @@
 {% include 'header.html' %}
 <body>
     <div class="container">
+        {% for category in categories %}
         <div class="item">
           <div class="img img-third"></div>
           <div class="card">
-            <h3>Зал №1</h3>
-            <p>Школа №709</p>
-            <a class="card_link" href="#">Learn more</a>
+            <h3>{{category.name}}</h3>
+            <p>{{category.description}}</p>
+            <a class="card_link" href="{% url 'voting'%}?id={{category.id}}">Learn more</a>
           </div>
         </div>
-        <div class="item">
-          <div class="img img-third"></div>
-          <div class="card">
-            <h3>Зал №1</h3>
-            <p>Школа №709</p>
-            <a class="card_link" href="#">Learn more</a>
-          </div>
-        </div>
-        <div class="item">
-          <div class="img img-third"></div>
-          <div class="card">
-            <h3>Зал №1</h3>
-            <p>Школа №709</p>
-            <a class="card_link" href="#">Learn more</a>
-          </div>
-        </div>
-        <div class="item">
-          <div class="img img-third"></div>
-          <div class="card">
-            <h3>Зал №1</h3>
-            <p>Школа №709</p>
-            <a class="card_link" href="#">Learn more</a>
-          </div>
-        </div>
-        <div class="item">
-          <div class="img img-third"></div>
-          <div class="card">
-            <h3>Зал №1</h3>
-            <p>Школа №709</p>
-            <a class="card_link" href="#">Learn more</a>
-          </div>
-        </div>
+        {% endfor %}
     </div>
-
 </body>    
 <footer>
 </footer>

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'survey.css' %}">
+    <link rel="stylesheet" href="{% static 'header.css' %}">
+    <title>Homepage</title>
+    <link rel="icon" href="{% static 'img/icon.svg' %}" type="image/svg+xml">
+</head>
+{% include 'header.html' %}
+<body>
+    <div class="container">
+    <div class="item">
+      <div class="img img-third"></div>
+      <div class="card">
+        {% if IsExist %}
+        <h3>{{ about_label }}</h3>
+        Автор: {{ author }}
+        <p>{{ about_description }}</p>
+
+
+        <form id="vote-form">
+            {% for i in data %}
+            <div class="question">
+                <p>{{ i.questions.question }}</p>
+                <div class="options_cards">
+                {% if i.questions.type_of_voting == "one" %}
+                    {% for ans in i.answers %}
+                        <label><input type="radio" name="i.questions.id" value="{{ ans.id }}"> {{ ans.answer }}</label><br>
+                    {% endfor %}
+                {% else %}
+                    {% for ans in i.answers %}
+                        <label><input type="checkbox" name="i.questions.id" value="{{ ans.id }}"> {{ ans.answer }}</label><br>
+                    {% endfor %}
+                {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="card_link">Vote</button>
+        </form>
+        {% else %}
+        <h3>Голосование не найдено!</h3>
+        {% endif %}
+      </div>
+    </div>
+</div>
+
+</body>
+<footer>
+</footer>
+
+</html>

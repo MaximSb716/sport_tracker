@@ -1,11 +1,10 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.contrib import messages
-from .forms import SignUpForm, SignInForm  # Импортируем наши формы
+from django.contrib.messages import constants as messages
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
+from main.forms import SignInForm, SignUpForm, NewVotingForm
+from main.models import Votings, Questions, Answers
 # Create your views here.
 
 def index1(request):
@@ -17,7 +16,8 @@ def about_us(request):
     return render(request, 'about_us.html', context)
 
 def catalog(request):
-    context = {}
+    categories = Votings.objects.all()
+    context = {"categories": categories}
     return render(request, 'catalog.html', context)
 
 def profile(request):
@@ -46,10 +46,7 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Регистрация прошла успешно!")
             return redirect("/")
-        else:
-            messages.error(request, "Ошибка регистрации. Проверьте данные.")
     else:
         form = SignUpForm()
     return render(request, "accounts/sign_up.html", {"form": form})
@@ -72,10 +69,6 @@ def sign_in(request):
                     return redirect(
                         "/"
                     )
-            else:
-                messages.error(request, "Неверный логин или пароль.")
-        else:
-            messages.error(request, "Ошибка в форме авторизации.")
     else:
         form = SignInForm()
 
@@ -85,6 +78,88 @@ def sign_in(request):
 def sign_out(request):
     """Выход пользователя из системы."""
     logout(request)
-    messages.success(request, "Вы успешно вышли из системы.")
     return redirect("/")
 
+def votings(request):
+    if str(request.user) == "AnonymousUser" and False:
+        page = "votings_anon.html"
+    else:
+        page = "votings.html"
+
+    context = {}
+    return render(request, page, context)
+
+def new_voting(request):
+    context = {"is_auth" : False}
+    if request.user.is_authenticated:
+        context["is_auth"] = True
+        if request.method == "POST":
+            form = NewVotingForm(request.POST)
+            if form.is_valid():
+                print("VALID +", form.cleaned_data)
+                data = form.cleaned_data
+                voting = Votings(
+                    author=request.user,
+                    name=data.get("about_label"),
+                    description=data.get("about_description"),
+                    questions_number=data.get("questions_count")
+                )
+                voting.save()
+                for i in range(int(data.get("questions_count"))):
+                    question = Questions(
+                        voting=voting,
+                        question=data.get(f"question{i}"),
+                        type_of_voting=data.get(f"type_question{i}")
+                    )
+                    question.save()
+                    for j in range(int(data.get(f"options_count{i}"))):
+                        answer = Answers(
+                            question=question,
+                            answer=data.get(f"option{i}_{j}")
+                        )
+                        answer.save()
+
+                return redirect(f"/voting?id={voting.id}")
+            else:
+                print("INVALID")
+        else:
+            context["form"] = NewVotingForm()
+
+
+    return render(request, "new_voting.html", context)
+
+def voting(request):
+    context = {"IsExist" : False}
+    
+    id_of_page = request.GET.get("id", "not founded")
+    if (id_of_page != "not founded"):
+        _voting = Votings.objects.filter(id=id_of_page)
+        if (len(_voting) != 0):
+            context["IsExist"] = True
+            context["about_label"] = _voting[0].name
+            context["about_description"] = _voting[0].description
+            context["author"] = _voting[0].author
+            _questions = Questions.objects.filter(voting=_voting[0])
+            data = []
+            i = 0
+            for quest in _questions:
+                i += 1
+                data.append({"questions" : quest, "answers" : Answers.objects.filter(question=quest)})
+            
+            context["data"] = data
+        else:
+            print("Not Founded")
+    else:
+        return redirect("/catalog/")
+
+    return render(request, 'voting.html', context)
+
+def about_voting(request):
+    context = {}
+    return render(request, 'about_voting.html', context)
+
+
+
+def survey(request):
+    context = {}
+    return render(request, 'survey.html', context)

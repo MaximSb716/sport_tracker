@@ -25,5 +25,9 @@ urlpatterns = [
     path('about_us/', about_us, name='about_us'),
     path('catalog/', catalog, name='catalog'),
     path('profile/', profile, name='profile'),
+    path('survey/', survey, name='survey'),
+    path('voting', voting, name='voting'),
+    path('voting/new', new_voting, name='voting/new'),
     path("", include("main.urls"))
 ]
+

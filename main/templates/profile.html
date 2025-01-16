@@ -16,10 +16,12 @@
     <div class="profile-header">
         <img src="user-avatar.jpg" alt="Аватар пользователя" class="profile-avatar">
         <form method="post">
+            {% csrf_token %}
             <div class="profile-avatar-actions">
-                <label for="avatar-upload" class="profile-change-avatar">Сменить аватар</label>
+                <button for="avatar-upload" class="profile-change-avatar">Сменить аватар</button>
                 <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
             </div>
+            <a class="profile-create" href="{% url 'voting/new' %}">Создать голосование</a>
         </form>
       </div>
     <div class="profile-content">
@@ -34,28 +36,13 @@
              <strong>Пароль:</strong>
             <span class="profile-password">********</span>
           </li>
-          <li><strong>Голосований пройдено</strong> <span class="profile-comment-count">123</span></li>
+          <a class="exit" href="{% url 'sign_out' %}">Выйти</a>
         </ul>
+
       </div>
     </div>
   </div>
    <script>
-        let avatarBase64 = null;
-
-        document.getElementById('avatar-upload').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const avatarImg = document.querySelector('.profile-avatar');
-                avatarImg.src = e.target.result;
-                avatarBase64 = e.target.result;
-            };
-
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        });
 
     </script>
 </body>
