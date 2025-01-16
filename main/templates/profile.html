@@ -10,7 +10,7 @@
     <link rel="icon" href="{% static 'img/icon.svg' %}" type="image/svg+xml">
 </head>
 {% include 'header.html' %}
-
+{% if is_auth %}
 <body>
   <div class="profile-container">
     <div class="profile-header">
@@ -21,7 +21,7 @@
                 <button for="avatar-upload" class="profile-change-avatar">Сменить аватар</button>
                 <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
             </div>
-            <a class="profile-create" href="{% url 'voting/new' %}">Создать голосование</a>
+            <a class="profile-create" href="{% url 'voting/new' %}">Создать заявку</a>
         </form>
       </div>
     <div class="profile-content">
@@ -46,7 +46,13 @@
 
     </script>
 </body>
-    
+{% else %}
+<body>
+    <div class="about_us_conteiner">
+        <h2>Для создания своей заявки нужно зарегистрироваться!</h2>
+    </div>
+</body>
+{% endif %}
 <footer>
 </footer>
 

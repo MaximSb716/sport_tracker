@@ -21,7 +21,9 @@ def catalog(request):
     return render(request, 'catalog.html', context)
 
 def profile(request):
-    context = {}
+    context = {"is_auth": False}
+    if request.user.is_authenticated:
+        context["is_auth"] = True
     return render(request, 'profile.html', context)
 
 @csrf_exempt

@@ -13,11 +13,11 @@
 {% if is_auth %}
 <body>
     <div class="about_us_conteiner">
-        <h1>Создай своё голосование!</h1>
+        <h1>Создайте заявку на получение инвентаря!</h1>
         <form action="/voting/new" method="post">
             {% csrf_token %}
             <div>
-                <p><b>Напиши заголовок голосования</b></p>
+                <p><b>Напиши название предмета</b></p>
                 <input type="text" name="about_label" maxlength="100" required id="id_about_label">
             </div>
             <div>
