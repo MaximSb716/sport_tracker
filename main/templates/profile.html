@@ -9,7 +9,11 @@
     <title>Homepage</title>
     <link rel="icon" href="{% static 'img/icon.svg' %}" type="image/svg+xml">
 </head>
-{% include 'header.html' %}
+{% if is_admin %}
+{% include 'header_admin.html' %}
+{% else %}
+{% include 'header_user.html' %}
+{% endif %}
 {% if is_auth %}
 <body>
   <div class="profile-container">
@@ -21,7 +25,11 @@
                 <button for="avatar-upload" class="profile-change-avatar">Сменить аватар</button>
                 <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
             </div>
-            <a class="profile-create" href="{% url 'voting/new' %}">Создать заявку</a>
+            {% if is_admin %}
+            {% else %}
+            {<a class="profile-create" href="{% url 'voting/new' %}">Создать заявку</a>
+            {% endif %}
+
         </form>
       </div>
     <div class="profile-content">

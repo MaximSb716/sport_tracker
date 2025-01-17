@@ -9,7 +9,11 @@
     <title>Homepage</title>
     <link rel="icon" href="{% static 'img/icon.svg' %}" type="image/svg+xml">
 </head>
-{% include 'header.html' %}
+{% if is_admin %}
+{% include 'header_admin.html' %}
+{% else %}
+{% include 'header_user.html' %}
+{% endif %}
 <body>
     <div class="container">
     <div class="item">

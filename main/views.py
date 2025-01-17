@@ -8,20 +8,33 @@ from main.models import Votings, Questions, Answers
 # Create your views here.
 
 def index1(request):
-    context = {}
+    context = {"is_admin": False}
+    if request.user.is_superuser:
+        context["is_admin"] = True
     return render(request, 'index1.html', context)
 
 def about_us(request):
-    context = {}
+    context = {"is_admin": False}
+    if request.user.is_superuser:
+        context["is_admin"] = True
     return render(request, 'about_us.html', context)
 
 def catalog(request):
     categories = Votings.objects.all()
-    context = {"categories": categories}
+    context = {"is_admin": False,
+               "categories": categories
+    }
+    if request.user.is_superuser:
+        context["is_admin"] = True
     return render(request, 'catalog.html', context)
 
 def profile(request):
-    context = {"is_auth": False}
+    context = {
+        "is_admin": False,
+        "is_auth": False
+    }
+    if request.user.is_superuser:
+        context["is_admin"] = True
     if request.user.is_authenticated:
         context["is_auth"] = True
     return render(request, 'profile.html', context)
@@ -43,6 +56,7 @@ def save_avatar(request):
 
 def sign_up(request):
     """Регистрация пользователя."""
+
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -51,7 +65,14 @@ def sign_up(request):
             return redirect("/")
     else:
         form = SignUpForm()
-    return render(request, "accounts/sign_up.html", {"form": form})
+
+    context = {
+        "is_admin": False,
+        "form": form
+    }
+    if request.user.is_superuser:
+        context["is_admin"] = True
+    return render(request, "accounts/sign_up.html", context)
 
 
 def sign_in(request):
@@ -73,8 +94,13 @@ def sign_in(request):
                     )
     else:
         form = SignInForm()
-
-    return render(request, "accounts/sign_in.html", {"form": form})
+    context = {
+        "is_admin": False,
+        "form": form
+    }
+    if request.user.is_superuser:
+        context["is_admin"] = True
+    return render(request, "accounts/sign_in.html", context)
 
 
 def sign_out(request):
@@ -83,6 +109,9 @@ def sign_out(request):
     return redirect("/")
 
 def votings(request):
+    context = {"is_admin": False}
+    if request.user.is_superuser:
+        context["is_admin"] = True
     if str(request.user) == "AnonymousUser" and False:
         page = "votings_anon.html"
     else:
@@ -92,7 +121,12 @@ def votings(request):
     return render(request, page, context)
 
 def new_voting(request):
-    context = {"is_auth" : False}
+    context = {
+        "is_admin": False,
+        "is_auth": False
+    }
+    if request.user.is_superuser:
+        context["is_admin"] = True
     if request.user.is_authenticated:
         context["is_auth"] = True
         if request.method == "POST":
@@ -131,7 +165,13 @@ def new_voting(request):
     return render(request, "new_voting.html", context)
 
 def voting(request):
-    context = {"IsExist" : False}
+    context = {
+        "is_admin": False,
+        "is_auth": False,
+        "IsExist": False
+    }
+    if request.user.is_superuser:
+        context["is_admin"] = True
     
     id_of_page = request.GET.get("id", "not founded")
     if (id_of_page != "not founded"):
@@ -158,6 +198,7 @@ def voting(request):
 
 def about_voting(request):
     context = {}
+
     return render(request, 'about_voting.html', context)
 
 
